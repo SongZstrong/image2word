@@ -1,43 +1,94 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
-import { Upload, X, Download, Copy, Loader2, FileText } from 'lucide-react';
-import Tesseract from 'tesseract.js';
+import { Upload, X, Download, Loader2, FileText } from 'lucide-react';
 import Image from 'next/image';
 
-export default function Home() {
+export default function ImageToWordPage() {
   const [image, setImage] = useState<string | null>(null);
-  const [text, setText] = useState<string>('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('eng');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const processImage = useCallback(async (file: File) => {
+  const processImage = useCallback(async () => {
+    if (!image) return;
+    
     setIsProcessing(true);
-    setText('');
 
     try {
-      const result = await Tesseract.recognize(file, selectedLanguage);
-      setText(result.data.text);
+      // 使用Tesseract.js进行OCR识别
+      const Tesseract = await import('tesseract.js');
+      
+      // 从当前显示的图片URL创建File对象
+      const response = await fetch(image);
+      const imageBlob = await response.blob();
+      const file = new File([imageBlob], 'image.jpg', { type: 'image/jpeg' });
+      
+      const result = await Tesseract.default.recognize(file, selectedLanguage);
+      const extractedText = result.data.text;
+      
+      // 使用docx库生成真正的Word文档
+      const { Document, Packer, Paragraph, TextRun } = await import('docx');
+      
+      // 将识别的文字按行分割
+      const lines = extractedText.split('\n').filter(line => line.trim() !== '');
+      
+      // 创建文档段落
+      const children = lines.map(line => 
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: line.trim(),
+              size: 24, // 12pt
+            }),
+          ],
+        })
+      );
+      
+      // 创建Word文档
+      const doc = new Document({
+        sections: [
+          {
+            properties: {},
+            children: children,
+          },
+        ],
+      });
+      
+      // 生成Word文档
+      const buffer = await Packer.toBuffer(doc);
+      const blob = new Blob([buffer], { 
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' 
+      });
+      const url = URL.createObjectURL(blob);
+      
+      // Create download link
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `extracted_text_${Date.now()}.docx`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
     } catch (error) {
       console.error('Error processing image:', error);
-      setText('Error processing image. Please try again.');
+      alert('Error processing image. Please try again.');
     } finally {
       setIsProcessing(false);
     }
-  }, [selectedLanguage]);
+  }, [image, selectedLanguage]);
 
   const handleFile = useCallback((file: File) => {
     if (file && file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onload = (e) => {
         setImage(e.target?.result as string);
-        processImage(file);
       };
       reader.readAsDataURL(file);
     }
-  }, [processImage]);
+  }, []);
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -67,47 +118,27 @@ export default function Home() {
 
   const clearAll = () => {
     setImage(null);
-    setText('');
+    setIsProcessing(false);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
-  };
-
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch (error) {
-      console.error('Failed to copy text:', error);
-    }
-  };
-
-  const downloadText = () => {
-    const blob = new Blob([text], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'extracted-text.txt';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
   };
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-4">
-          Image to Text Converter Online Free
+          Image to Word Converter
         </h1>
         <p className="text-lg text-gray-600">
-          Free OCR online tool to convert images to text. Extract exact text from image online free using our powerful image to text converter. Best image convert tools online free.
+          Convert images to Word documents online free. Upload an image and download as a Word file instantly.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="flex flex-col h-full">
-          <h3 className="text-lg font-semibold text-gray-900 text-center mb-4">Import Image</h3>
-          
+          <h3 className="text-lg font-semibold text-gray-900 text-center mb-4">Upload Image</h3>
+
           {/* Language Selection - Step 1 */}
           <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-4 mb-4">
             <div className="flex items-center space-x-2 mb-2">
@@ -145,6 +176,7 @@ export default function Home() {
             </select>
           </div>
         </div>
+
           <div
             className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors flex-1 flex flex-col justify-center ${
               dragActive
@@ -156,41 +188,41 @@ export default function Home() {
             onDragOver={handleDrag}
             onDrop={handleDrop}
           >
-            {!image ? (
-              <div className="space-y-4">
-                <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                <div>
-                  <p className="text-lg font-medium text-gray-900">
-                    Drop your image here
-                  </p>
-                  <p className="text-gray-500">or click to browse</p>
-                </div>
-                <button
-                  onClick={() => fileInputRef.current?.click()}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
-                >
-                  Choose File
-                </button>
-              </div>
-            ) : (
+            {image ? (
               <div className="relative">
                 <Image
                   src={image}
-                  alt="Uploaded"
+                  alt="Uploaded image"
                   width={400}
                   height={300}
-                  className="max-w-full h-auto rounded-lg"
+                  className="mx-auto rounded-lg max-w-full h-auto"
                 />
                 <button
                   onClick={clearAll}
-                  className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
                 >
                   <X className="h-4 w-4" />
                 </button>
               </div>
+            ) : (
+              <div>
+                <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+                <p className="text-gray-600 mb-2">
+                  Drag and drop an image here, or{' '}
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="text-blue-600 hover:text-blue-500 font-medium"
+                  >
+                    browse
+                  </button>
+                </p>
+                <p className="text-sm text-gray-500">
+                  Supports JPG, PNG, GIF, BMP up to 10MB
+                </p>
+              </div>
             )}
           </div>
-          
+
           <input
             ref={fileInputRef}
             type="file"
@@ -201,43 +233,42 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col h-full">
-          <h3 className="text-lg font-semibold text-gray-900 text-center mb-4">Extracted Text</h3>
+          <h3 className="text-lg font-semibold text-gray-900 text-center mb-4">Word Document</h3>
           
-          {/* Action Buttons - Same height as language selection */}
+          {/* Action Buttons */}
           <div className="flex items-center justify-end mb-4 h-10">
-            {text && (
+            {image && !isProcessing && (
               <div className="flex space-x-2">
                 <button
-                  onClick={copyToClipboard}
-                  className="flex items-center space-x-1 text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                  onClick={processImage}
+                  className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
                 >
-                  <Copy className="h-4 w-4" />
-                  <span>Copy</span>
-                </button>
-                <button
-                  onClick={downloadText}
-                  className="flex items-center space-x-1 text-sm text-gray-600 hover:text-blue-600 transition-colors"
-                >
-                  <Download className="h-4 w-4" />
-                  <span>Download</span>
+                  <FileText className="h-4 w-4" />
+                  <span>Convert to Word</span>
                 </button>
               </div>
             )}
           </div>
-          
+
           <div className="bg-white border border-gray-300 rounded-lg p-4 flex-1 flex flex-col min-h-[400px]">
             {isProcessing ? (
               <div className="flex items-center justify-center flex-1">
                 <div className="text-center">
-                  <Loader2 className="mx-auto h-8 w-8 animate-spin text-blue-600 mb-2" />
-                  <p className="text-gray-600">Processing image...</p>
+                  <Loader2 className="h-8 w-8 animate-spin text-blue-600 mx-auto mb-2" />
+                  <p className="text-gray-600">Converting image to Word document...</p>
                 </div>
               </div>
-            ) : text ? (
-              <div className="whitespace-pre-wrap text-gray-900 flex-1 overflow-auto">{text}</div>
+            ) : image ? (
+              <div className="text-center flex-1 flex items-center justify-center">
+                <div>
+                  <FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-600 mb-2">Image uploaded successfully</p>
+                  <p className="text-sm text-gray-500">Click "Convert to Word" to generate your document</p>
+                </div>
+              </div>
             ) : (
               <div className="text-gray-500 text-center flex-1 flex items-center justify-center">
-                Upload an image to extract text
+                Upload an image to convert to Word document
               </div>
             )}
           </div>
@@ -276,7 +307,7 @@ export default function Home() {
 
       {/* Features Section */}
       <div className="mt-8 bg-white rounded-lg p-6 shadow-sm">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Why Choose Our Image to Text Converter?</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Why Choose Our Image to Word Converter?</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center">
             <div className="bg-blue-100 rounded-full p-3 w-12 h-12 mx-auto mb-3 flex items-center justify-center">
@@ -290,7 +321,7 @@ export default function Home() {
               <Download className="h-6 w-6 text-green-600" />
             </div>
             <h3 className="font-medium text-gray-900 mb-2">Instant Download</h3>
-            <p className="text-sm text-gray-600">Convert and download your text immediately</p>
+            <p className="text-sm text-gray-600">Convert and download your Word document immediately</p>
           </div>
           <div className="text-center">
             <div className="bg-purple-100 rounded-full p-3 w-12 h-12 mx-auto mb-3 flex items-center justify-center">

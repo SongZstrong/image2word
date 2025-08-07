@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "image2word.com - Image to Text Converter",
-  description: "Free online tool to convert images to text. Extract exact text from image online free with our powerful OCR technology.",
-  keywords: "image to text, OCR, text extraction, image recognition, free tool, image2word.com",
+  title: "image2word.com - Image to Text Converter Online Free | OCR Online Free",
+  description: "Free image to text converter online free. Best OCR online free tool to convert images to text, word, and PDF. Image convert tools online free with powerful OCR technology.",
+  keywords: "image to text converter online free, OCR online free, image convert tools online free, image to word converter, image to pdf converter, free OCR tool, text extraction, image recognition, image2word.com",
 };
 
 export default function RootLayout({

@@ -1,4 +1,0 @@
-优化这个网站：
-1. 网站的网址替换为  image2word.com .
-主要功能的简介部分加上 exact text from image online free 。并且在主页面，把两个方框上下严格对齐。左边的图片上方写上import image
-2.导航栏加上背景色，底部导航栏 Our Services 放到Features 这一列

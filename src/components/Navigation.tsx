@@ -8,7 +8,9 @@ export default function Navigation() {
   const pathname = usePathname();
 
   const navItems = [
-    { href: '/', label: 'image2word', icon: Image },
+    { href: '/', label: 'image to text ', icon: Image },
+    { href: '/image-to-word', label: 'image to word', icon: FileText },
+    { href: '/image-to-pdf', label: 'image to pdf', icon: FileText },
     { href: '/blog', label: 'blog', icon: FileText },
     { href: '/languages', label: 'languages', icon: Globe },
   ];
