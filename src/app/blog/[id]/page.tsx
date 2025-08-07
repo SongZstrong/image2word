@@ -123,13 +123,13 @@ const blogPosts = [
       <p>When I first started looking into OCR solutions, my boss asked me to calculate the &quot;real cost&quot; of our current manual data entry process. What I found shocked everyone in the office.</p>
       
       <h2>The Obvious Costs</h2>
-      <p>We were paying $15 per hour for data entry work. With 40 hours per week, that's $600 per week, $2,400 per month. But that's just the tip of the iceberg.</p>
+      <p>We were paying $15 per hour for data entry work. With 40 hours per week, that&apos;s $600 per week, $2,400 per month. But that&apos;s just the tip of the iceberg.</p>
       
       <h2>The Hidden Costs</h2>
-      <p>Error correction was eating up another 20% of our time. Every typo meant someone had to find it, fix it, and verify the correction. That's an additional $480 per month in hidden costs.</p>
+      <p>Error correction was eating up another 20% of our time. Every typo meant someone had to find it, fix it, and verify the correction. That&apos;s an additional $480 per month in hidden costs.</p>
       
       <h2>Opportunity Costs</h2>
-      <p>While our team was stuck typing, they couldn't work on more valuable tasks like analysis, customer service, or process improvement. This opportunity cost was harder to measure but potentially much larger.</p>
+      <p>While our team was stuck typing, they couldn&apos;t work on more valuable tasks like analysis, customer service, or process improvement. This opportunity cost was harder to measure but potentially much larger.</p>
       
       <h2>Turnaround Time</h2>
       <p>Manual processing meant delays. Documents that could be processed instantly with OCR were taking days to complete. This affected our customer satisfaction and internal workflow.</p>
@@ -138,7 +138,7 @@ const blogPosts = [
       <p>When I compared the monthly cost of manual processing ($2,880) to the cost of OCR tools (around $100), the decision was obvious. We could save over $2,700 per month while improving accuracy and speed.</p>
       
       <h2>Lessons Learned</h2>
-      <p>The real cost of manual data entry isn't just the hourly rate – it's the errors, delays, and missed opportunities. Modern OCR tools aren't just convenient; they're essential for staying competitive.</p>
+      <p>The real cost of manual data entry isn&apos;t just the hourly rate – it&apos;s the errors, delays, and missed opportunities. Modern OCR tools aren&apos;t just convenient; they&apos;re essential for staying competitive.</p>
       
       <p>Sometimes the &quot;cheap&quot; option ends up being the most expensive choice.</p>
     `
