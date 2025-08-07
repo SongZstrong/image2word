@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, Calendar, Clock, Share2 } from 'lucide-react';
@@ -96,7 +96,7 @@ const blogPosts = [
       <p>Let me be honest – I used to think online OCR tools were just another tech gimmick. I was perfectly happy with my manual data entry routine, even though it took forever and drove me crazy with typos.</p>
       
       <h2>The Breaking Point</h2>
-      <p>It all changed when I had to process 50 handwritten receipts for expense reports. After spending three hours typing them up, I realized there had to be a better way. That's when I discovered online OCR tools.</p>
+      <p>It all changed when I had to process 50 handwritten receipts for expense reports. After spending three hours typing them up, I realized there had to be a better way. That&apos;s when I discovered online OCR tools.</p>
       
       <h2>First Impressions</h2>
       <p>I was skeptical at first. How could a free online tool possibly be better than my careful manual work? But the results were eye-opening. What took me 10 minutes to type, the OCR tool processed in 30 seconds.</p>
@@ -108,9 +108,8 @@ const blogPosts = [
       <p>What used to take me hours now takes minutes. I can process a stack of documents while my coffee is still brewing. The time savings alone made the switch worthwhile.</p>
       
       <h2>My Advice</h2>
-      <p>If you're still doing manual data entry, give online OCR tools a try. Start with a simple document to see the difference. You might be surprised by how much time you can save.</p>
-      
-      <p>I wish I had discovered these tools years ago. Better late than never, right?</p>
+      <p>If you&apos;re still doing manual data entry, give online OCR tools a try. Start with a simple document to see the difference. You might be surprised by how much time you can save.</p>
+
     `
   },
   {
@@ -121,7 +120,7 @@ const blogPosts = [
     readTime: "4 min read",
     coverImage: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=400&fit=crop&crop=center",
     content: `
-      <p>When I first started looking into OCR solutions, my boss asked me to calculate the "real cost" of our current manual data entry process. What I found shocked everyone in the office.</p>
+      <p>When I first started looking into OCR solutions, my boss asked me to calculate the &quot;real cost&quot; of our current manual data entry process. What I found shocked everyone in the office.</p>
       
       <h2>The Obvious Costs</h2>
       <p>We were paying $15 per hour for data entry work. With 40 hours per week, that's $600 per week, $2,400 per month. But that's just the tip of the iceberg.</p>
@@ -141,14 +140,13 @@ const blogPosts = [
       <h2>Lessons Learned</h2>
       <p>The real cost of manual data entry isn't just the hourly rate – it's the errors, delays, and missed opportunities. Modern OCR tools aren't just convenient; they're essential for staying competitive.</p>
       
-      <p>Sometimes the "cheap" option ends up being the most expensive choice.</p>
+      <p>Sometimes the &quot;cheap&quot; option ends up being the most expensive choice.</p>
     `
   }
 ];
 
 export default function BlogPostPage() {
   const params = useParams();
-  const router = useRouter();
   const postId = parseInt(params.id as string);
   
   const post = blogPosts.find(p => p.id === postId);
@@ -158,7 +156,7 @@ export default function BlogPostPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Blog Post Not Found</h1>
-          <p className="text-gray-600 mb-6">The blog post you're looking for doesn't exist.</p>
+          <p className="text-gray-600 mb-6">The blog post you&apos;re looking for doesn&apos;t exist.</p>
           <Link href="/blog" className="text-blue-600 hover:text-blue-700 font-medium">
             ← Back to Blog
           </Link>

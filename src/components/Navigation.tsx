@@ -2,13 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Image, FileText, Globe } from 'lucide-react';
+import { Image as ImageIcon, FileText, Globe } from 'lucide-react';
 
 export default function Navigation() {
   const pathname = usePathname();
 
   const navItems = [
-    { href: '/', label: 'image to text ', icon: Image },
+    { href: '/', label: 'image to text ', icon: ImageIcon },
     { href: '/image-to-word', label: 'image to word', icon: FileText },
     { href: '/image-to-pdf', label: 'image to pdf', icon: FileText },
     { href: '/blog', label: 'blog', icon: FileText },
@@ -21,7 +21,7 @@ export default function Navigation() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <Image className="h-8 w-8 text-white" />
+              <ImageIcon className="h-8 w-8 text-white" />
               <span className="text-xl font-bold text-white">image2word</span>
             </Link>
           </div>

@@ -58,7 +58,7 @@ export default function ImageToWordPage() {
       
       // 生成Word文档
       const buffer = await Packer.toBuffer(doc);
-      const blob = new Blob([buffer], { 
+      const blob = new Blob([buffer as BlobPart], { 
         type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' 
       });
       const url = URL.createObjectURL(blob);
@@ -263,7 +263,7 @@ export default function ImageToWordPage() {
                 <div>
                   <FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                   <p className="text-gray-600 mb-2">Image uploaded successfully</p>
-                  <p className="text-sm text-gray-500">Click "Convert to Word" to generate your document</p>
+                  <p className="text-sm text-gray-500">Click &quot;Convert to Word&quot; to generate your document</p>
                 </div>
               </div>
             ) : (
