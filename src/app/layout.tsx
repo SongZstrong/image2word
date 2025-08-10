@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     images: ["https://image2word.com/og-image.jpg"],
   },
   verification: {
-    google: "your-google-verification-code",
+    google: "Ka5DkT4dDLshQxB_xQNYa9Yml99sJA4enevi1RDRxeg",
     yandex: "your-yandex-verification-code",
   },
   alternates: {
