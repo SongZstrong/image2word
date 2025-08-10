@@ -53,6 +53,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://image2word.com",
   },
+  other: {
+    "google-adsense-account": "ca-pub-8115477477403051",
+  },
 };
 
 export default function RootLayout({
