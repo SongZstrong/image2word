@@ -17,9 +17,42 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "image2word.com - Image to Text Converter Online Free | OCR Online Free",
-  description: "Free image to text converter online free. Best OCR online free tool to convert images to text, word, and PDF. Image convert tools online free with powerful OCR technology.",
-  keywords: "image to text converter online free, OCR online free, image convert tools online free, image to word converter, image to pdf converter, free OCR tool, text extraction, image recognition, image2word.com",
+  title: "Image to Text Converter Online Free | OCR Tool | image2word.com",
+  description: "Free online image to text converter with powerful OCR technology. Convert images to text, Word, and PDF instantly. Support multiple languages including English, Chinese, Japanese, Korean and more. No registration required.",
+  keywords: "image to text converter online free, OCR online free, image convert tools online free, image to word converter, image to pdf converter, free OCR tool, text extraction, image recognition, image2word.com, optical character recognition",
+  authors: [{ name: "image2word.com" }],
+  creator: "image2word.com",
+  publisher: "image2word.com",
+  robots: "index, follow",
+  openGraph: {
+    title: "Image to Text Converter Online Free | OCR Tool",
+    description: "Free online image to text converter with powerful OCR technology. Convert images to text, Word, and PDF instantly.",
+    url: "https://image2word.com",
+    siteName: "image2word.com",
+    images: [
+      {
+        url: "https://image2word.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Image to Text Converter Online Free",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Image to Text Converter Online Free | OCR Tool",
+    description: "Free online image to text converter with powerful OCR technology. Convert images to text, Word, and PDF instantly.",
+    images: ["https://image2word.com/og-image.jpg"],
+  },
+  verification: {
+    google: "your-google-verification-code",
+    yandex: "your-yandex-verification-code",
+  },
+  alternates: {
+    canonical: "https://image2word.com",
+  },
 };
 
 export default function RootLayout({

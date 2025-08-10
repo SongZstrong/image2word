@@ -1,3 +1,19 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact Us - Image to Text Converter | image2word.com",
+  description: "Get in touch with our team for questions, technical support, or feedback about our image to text converter and OCR services.",
+  keywords: "contact us, support, feedback, technical support, image to text converter, OCR help",
+  openGraph: {
+    title: "Contact Us - Image to Text Converter",
+    description: "Get in touch with our team for questions, technical support, or feedback about our OCR services.",
+    url: "https://image2word.com/contact",
+  },
+  alternates: {
+    canonical: "https://image2word.com/contact",
+  },
+};
+
 export default function ContactPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

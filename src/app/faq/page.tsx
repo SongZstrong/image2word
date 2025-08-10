@@ -1,3 +1,19 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "FAQ - Image to Text Converter Questions | image2word.com",
+  description: "Find answers to frequently asked questions about our image to text converter, OCR technology, supported formats, accuracy, and data security.",
+  keywords: "FAQ, frequently asked questions, image to text converter, OCR technology, supported formats, accuracy, data security, how to use",
+  openGraph: {
+    title: "FAQ - Image to Text Converter Questions",
+    description: "Find answers to frequently asked questions about our image to text converter and OCR technology.",
+    url: "https://image2word.com/faq",
+  },
+  alternates: {
+    canonical: "https://image2word.com/faq",
+  },
+};
+
 export default function FAQPage() {
   const faqs = [
     {

@@ -1,3 +1,19 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "OCR Services - Image to Text Conversion | image2word.com",
+  description: "Explore our comprehensive OCR services including image-to-text conversion, multi-language support, privacy-first processing, and free unlimited access.",
+  keywords: "OCR services, image to text conversion, multi-language OCR, privacy-first processing, free OCR tools, text recognition services",
+  openGraph: {
+    title: "OCR Services - Image to Text Conversion",
+    description: "Explore our comprehensive OCR services including image-to-text conversion and multi-language support.",
+    url: "https://image2word.com/services",
+  },
+  alternates: {
+    canonical: "https://image2word.com/services",
+  },
+};
+
 export default function ServicesPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

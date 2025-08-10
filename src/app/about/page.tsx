@@ -1,3 +1,19 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us - Image to Text Converter | image2word.com",
+  description: "Learn about our mission to provide free, reliable OCR tools for converting images to text. Discover our values, technology, and commitment to accessibility.",
+  keywords: "about us, image to text converter, OCR technology, mission, values, accessibility, free tools",
+  openGraph: {
+    title: "About Us - Image to Text Converter",
+    description: "Learn about our mission to provide free, reliable OCR tools for converting images to text.",
+    url: "https://image2word.com/about",
+  },
+  alternates: {
+    canonical: "https://image2word.com/about",
+  },
+};
+
 export default function AboutPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

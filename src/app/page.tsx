@@ -4,6 +4,7 @@ import { useState, useRef, useCallback } from 'react';
 import { Upload, X, Download, Copy, Loader2, FileText } from 'lucide-react';
 import Tesseract from 'tesseract.js';
 import Image from 'next/image';
+import Script from 'next/script';
 
 export default function Home() {
   const [image, setImage] = useState<string | null>(null);
@@ -94,7 +95,45 @@ export default function Home() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <>
+      <Script
+        id="structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Image to Text Converter Online Free",
+            "description": "Free online image to text converter with powerful OCR technology. Convert images to text, Word, and PDF instantly.",
+            "url": "https://image2word.com",
+            "applicationCategory": "UtilityApplication",
+            "operatingSystem": "Any",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "featureList": [
+              "Image to Text Conversion",
+              "Multi-Language Support",
+              "Image to PDF Conversion",
+              "Image to Word Conversion",
+              "Privacy-First Processing",
+              "Free and Unlimited Access"
+            ],
+            "author": {
+              "@type": "Organization",
+              "name": "image2word.com"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "image2word.com",
+              "url": "https://image2word.com"
+            }
+          })
+        }}
+      />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-4">
           Image to Text Converter Online Free
@@ -301,6 +340,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

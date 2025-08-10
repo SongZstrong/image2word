@@ -116,6 +116,32 @@ No environment variables required - the tool works entirely client-side.
 2. Connect your repository to Vercel
 3. Deploy automatically
 
+## 🔍 SEO Optimization
+
+This project includes comprehensive SEO optimization:
+
+### Technical SEO
+- **Sitemap**: Automatically generated sitemap.xml
+- **Robots.txt**: Properly configured for search engines
+- **Meta Tags**: Optimized titles, descriptions, and Open Graph tags
+- **Structured Data**: JSON-LD schema markup for better search understanding
+- **Security Headers**: XSS protection, frame options, and content type headers
+
+### Page Optimization
+- **Unique Titles**: Each page has descriptive, keyword-rich titles
+- **Meta Descriptions**: Compelling descriptions for search results
+- **Canonical URLs**: Prevents duplicate content issues
+- **Open Graph**: Optimized social media sharing
+
+### Performance
+- **Image Optimization**: Next.js automatic image optimization
+- **Compression**: Enabled gzip compression
+- **Caching**: ETags and browser caching headers
+- **Analytics**: Vercel Analytics and Speed Insights integration
+
+### SEO Checklist
+See [SEO-CHECKLIST.md](./SEO-CHECKLIST.md) for a complete optimization checklist and next steps.
+
 ### Other Platforms
 
 The app can be deployed to any platform that supports Next.js:
