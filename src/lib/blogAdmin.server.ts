@@ -20,32 +20,31 @@ const mapSections = (sections: unknown): BlogPostSection[] => {
     return [];
   }
 
-  return sections.reduce<BlogPostSection[]>((acc, section) => {
-    if (!section || typeof section !== 'object') {
-      return acc;
+  const result: BlogPostSection[] = [];
+
+  for (const rawSection of sections) {
+    if (!rawSection || typeof rawSection !== 'object') {
+      continue;
     }
 
-    const heading =
-      'heading' in section && typeof section.heading === 'string'
-        ? section.heading
-        : undefined;
-
-    const paragraphs =
-      'paragraphs' in section && Array.isArray(section.paragraphs)
-        ? section.paragraphs.filter((paragraph: unknown): paragraph is string => typeof paragraph === 'string')
-        : [];
+    const section = rawSection as Record<string, unknown>;
+    const heading = typeof section.heading === 'string' ? section.heading : undefined;
+    const paragraphsRaw = Array.isArray(section.paragraphs) ? section.paragraphs : [];
+    const paragraphs = paragraphsRaw.filter(
+      (paragraph: unknown): paragraph is string => typeof paragraph === 'string'
+    );
 
     if (!heading && paragraphs.length === 0) {
-      return acc;
+      continue;
     }
 
-    acc.push({
+    result.push({
       heading,
       paragraphs,
     });
+  }
 
-    return acc;
-  }, []);
+  return result;
 };
 
 const mapDetailRow = (row: BlogPostRow): BlogPost => ({
