@@ -1,0 +1,82 @@
+import 'server-only';
+
+import { supabaseAdmin } from './supabaseAdmin';
+import type { BlogPost, BlogPostSection, NewBlogPost } from './blog';
+
+type BlogPostRow = {
+  id: number;
+  title: string;
+  excerpt: string;
+  cover_image_url: string;
+  read_time_minutes: number;
+  published_at: string;
+  sections?: unknown;
+};
+
+const detailFields = 'id,title,excerpt,cover_image_url,read_time_minutes,published_at,sections';
+
+const mapSections = (sections: unknown): BlogPostSection[] => {
+  if (!Array.isArray(sections)) {
+    return [];
+  }
+
+  return sections
+    .map((section) => {
+      if (!section || typeof section !== 'object') {
+        return null;
+      }
+
+      const heading =
+        'heading' in section && typeof section.heading === 'string'
+          ? section.heading
+          : undefined;
+
+      const paragraphs =
+        'paragraphs' in section && Array.isArray(section.paragraphs)
+          ? section.paragraphs.filter((paragraph) => typeof paragraph === 'string')
+          : [];
+
+      if (!heading && paragraphs.length === 0) {
+        return null;
+      }
+
+      return {
+        heading,
+        paragraphs,
+      };
+    })
+    .filter((section): section is BlogPostSection => Boolean(section));
+};
+
+const mapDetailRow = (row: BlogPostRow): BlogPost => ({
+  id: row.id,
+  title: row.title,
+  excerpt: row.excerpt,
+  coverImageUrl: row.cover_image_url,
+  readTimeMinutes: row.read_time_minutes,
+  publishedAt: row.published_at,
+  sections: mapSections(row.sections),
+});
+
+export const createBlogPost = async (input: NewBlogPost): Promise<BlogPost | null> => {
+  const { data, error } = await supabaseAdmin
+    .from('img2word_blog_posts')
+    .insert({
+      id: input.id,
+      title: input.title,
+      excerpt: input.excerpt,
+      cover_image_url: input.coverImageUrl,
+      read_time_minutes: input.readTimeMinutes,
+      published_at: input.publishedAt,
+      sections: input.sections,
+    })
+    .select(detailFields)
+    .single();
+
+  if (error) {
+    console.error('Failed to create blog post.', error);
+    return null;
+  }
+
+  return mapDetailRow(data);
+};
