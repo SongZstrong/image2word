@@ -20,31 +20,32 @@ const mapSections = (sections: unknown): BlogPostSection[] => {
     return [];
   }
 
-  const result: BlogPostSection[] = [];
+  return sections
+    .map((rawSection) => {
+      if (!rawSection || typeof rawSection !== 'object') {
+        return null;
+      }
 
-  for (const rawSection of sections) {
-    if (!rawSection || typeof rawSection !== 'object') {
-      continue;
-    }
+      const sectionData = rawSection as Record<string, unknown>;
+      const heading = typeof sectionData.heading === 'string' ? sectionData.heading : undefined;
+      const paragraphsRaw = Array.isArray(sectionData.paragraphs) ? sectionData.paragraphs : [];
+      const paragraphs = paragraphsRaw.filter(
+        (paragraph: unknown): paragraph is string => typeof paragraph === 'string'
+      );
 
-    const section = rawSection as Record<string, unknown>;
-    const heading = typeof section.heading === 'string' ? section.heading : undefined;
-    const paragraphsRaw = Array.isArray(section.paragraphs) ? section.paragraphs : [];
-    const paragraphs = paragraphsRaw.filter(
-      (paragraph: unknown): paragraph is string => typeof paragraph === 'string'
-    );
+      if (!heading && paragraphs.length === 0) {
+        return null;
+      }
 
-    if (!heading && paragraphs.length === 0) {
-      continue;
-    }
+      const normalizedSection: BlogPostSection = { paragraphs };
 
-    result.push({
-      heading,
-      paragraphs,
-    });
-  }
+      if (heading !== undefined) {
+        normalizedSection.heading = heading;
+      }
 
-  return result;
+      return normalizedSection;
+    })
+    .filter((section): section is BlogPostSection => section !== null);
 };
 
 const mapDetailRow = (row: BlogPostRow): BlogPost => ({
