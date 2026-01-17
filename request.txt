@@ -1,0 +1,172 @@
+
+修改需求 1：添加“粘贴上传”功能 (Ctrl+V)
+
+目标模块：前端交互逻辑 (JavaScript) 定位关键词：drop 事件监听器, input type="file", 或包含文本 "Drop your image here" 的 HTML 文件。
+
+Prompt for Codex:
+
+Context: locate the JavaScript file or <script> tag that handles the file upload logic (look for the "drop" event listener or the change event on the file input element).
+
+Task: Implement Paste-to-Upload (Ctrl+V) Support Please modify the code to support pasting images directly from the clipboard.
+
+Requirements:
+
+Event Listener: Add a global paste event listener to the document or the main upload container.
+
+Logic:
+
+Check event.clipboardData.items.
+
+If an item is an image (type.indexOf('image') !== -1), retrieve it as a Blob using getAsFile().
+
+Crucial: Reuse the existing function that handles the file drop (e.g., handleFileSelect or uploadImage). Pass the pasted blob to this function so it triggers the exact same preview and upload flow as drag-and-drop.
+
+UI Feedback: When a paste occurs, trigger a visual feedback. Find the existing notification/toast style (or the success message logic) and display "Image pasted from clipboard".
+
+Style: Do not create new UI elements that look different. Use existing CSS classes for any feedback.
+
+修改需求 2：新增“图片裁剪”预处理 (Cropper Integration)
+
+目标模块：上传流程控制 (Upload Flow) 定位关键词：在调用后端 API (fetch or axios) 之前的代码段。
+
+Prompt for Codex:
+
+Context: Identify the function where the image file is prepared and sent to the backend (look for FormData or the API endpoint URL).
+
+Task: Integrate Image Cropping before Upload I need to add a cropping step before the actual upload happens.
+
+Implementation Steps:
+
+Dependency: Assume I will include Cropper.js (or a similar lightweight library) via CDN or npm.
+
+Intercept Upload: Modify the upload function. Instead of sending the file immediately upon selection/drop:
+
+Display a Modal (Popup). Style Requirement: The Modal must use the same CSS classes as the current website's containers/cards (check the class names used in the "Features" or "About" section for reference) to ensure it looks native.
+
+Inside the Modal, show the selected image initialized with the Cropper.
+
+Controls: Add two buttons inside the Modal:
+
+"Cancel": Closes the modal and clears the selection.
+
+"Confirm & Convert": Gets the cropped image blob (cropper.getCroppedCanvas().toBlob()) and then calls the original API upload function with this new blob.
+
+Button Style: The "Confirm" button MUST have the exact same CSS classes as the current main "Convert/Upload" button to maintain design consistency.
+
+修改需求 3：优化结果展示为“双栏布局”与“一键复制”
+
+目标模块：结果渲染页 (Result Section) 定位关键词：<textarea>, Extracted Text, 或包含下载按钮的 HTML 结构。
+
+Prompt for Codex:
+
+Context: Locate the HTML/CSS section responsible for displaying the "Extracted Text" result. Currently, it likely shows the result below the upload area.
+
+Task: Refactor Result Layout and Add Copy Button
+
+1. Layout Changes (CSS/HTML):
+
+Change the container display to a Split View (2 columns) for desktop screens (screens > 768px).
+
+Left Column: Display the uploaded (or cropped) image preview.
+
+Right Column: The existing <textarea> with the extracted text.
+
+Mobile: Keep them stacked vertically.
+
+Consistency: Ensure the new container uses the same padding and border-radius as the existing "Upload Image" box.
+
+2. Add 'Copy Text' Feature:
+
+Add a new button next to the existing "Download" button.
+
+Label: "Copy Text".
+
+Icon: If the site uses FontAwesome or SVG icons, use a "clipboard" icon.
+
+Functionality: Click to copy the <textarea> content to the clipboard (navigator.clipboard.writeText).
+
+Style: The button must look like a "Secondary Action". If the Download button is solid blue, make this one White with a Blue Border (Outline style), inheriting the same font-size and padding.
+
+Feedback: Change button text to "Copied!" for 2 seconds after clicking.
+
+修改需求 4：记住“语言选择”偏好
+
+目标模块：初始化脚本 & DOM 交互 定位关键词：localStorage, <select>, Select Text Language。
+
+Prompt for Codex:
+
+Context: Find the <select> element used for "Select Text Language" and its corresponding JavaScript change handler.
+
+Task: Persist Language Selection Improve the UX by remembering the user's last selected language.
+
+Logic:
+
+On Change: Add a listener to the language dropdown. When the value changes, save it to localStorage.setItem('preferred_language', value).
+
+On Load: In the window load event (or framework mounted hook), check if localStorage.getItem('preferred_language') exists.
+
+Action: If it exists, set the dropdown's value to the stored language automatically.
+
+Constraint: Do not change the default option structure, just the selected state.
+
+
+
+修改需求 5：全站 SEO 深度优化 (Technical SEO & Structured Data)
+
+目标模块：index.html (Head section & Semantic Structure) 定位关键词：<head>, <meta>, <title>, JSON-LD
+
+Prompt for Codex:
+
+Role: SEO Specialist & Senior Frontend Developer Context: I need to optimize image2word.com for search engines (Google/Bing) to rank higher for keywords like "Image to Text", "OCR Online", and "Picture to Word". Constraint: Do NOT change the visual appearance or remove any existing text. Only add or modify HTML tags, attributes, and hidden scripts to improve SEO.
+
+Task: Comprehensive SEO Optimization Please modify the index.html (and relevant template files) to implement the following 4 distinct SEO improvements:
+
+1. Advanced Meta Tags (Head Section) Replace or Update the <head> section with the following optimized tags. Ensure you keep any existing stylesheets/scripts, just update the metadata:
+
+Title Tag: Change to: <title>Image to Word - Free Online OCR Converter (JPG/PNG to Text)</title>
+
+Meta Description: Add or update: <meta name="description" content="Convert images to editable text or Word documents online for free. Best OCR tool for JPG, PNG, and screenshots. High accuracy, no registration required, supports multi-language recognition.">
+
+Keywords: <meta name="keywords" content="image to text, ocr online, jpg to word, png to text, picture to text converter, extract text from image, free ocr">
+
+Canonical Tag: Add <link rel="canonical" href="https://image2word.com/" /> to prevent duplicate content issues.
+
+Open Graph (Social Sharing): Add standard OG tags (og:title, og:description, og:url, og:type='website') so the link looks good when shared on Twitter/Facebook.
+
+2. JSON-LD Structured Data (The "Rich Snippet" Booster) Insert the following application/ld+json script inside the <head> or right before </body>. This tells Google that this website is a Software Application, which helps in ranking:
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Image2Word",
+  "url": "https://image2word.com",
+  "description": "Free online OCR tool to convert images (JPG, PNG) to editable text and Word documents.",
+  "applicationCategory": "Productivity",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": "Image to Text, OCR, Multi-language Support, Drag and Drop Upload"
+}
+</script>
+
+3. Semantic HTML Structure (Body Section) Review the existing HTML structure. Without breaking the CSS styles:
+
+Ensure the main logo or site name is wrapped in an <h1> tag (or if one already exists, ensure it contains the core keyword "Image to Text Converter").
+
+Ensure the main upload/conversion area is wrapped in a <main> tag.
+
+Ensure the "How to use" or "Features" sections are wrapped in <section> or <article> tags instead of generic <div>s where possible.
+
+4. Image Accessibility (Alt Attributes)
+
+Find the site logo <img> tag and add alt="Image2Word - Free Online Image to Text Converter".
+
+For any instructional icons or images in the "How to Use" section, add descriptive alt text (e.g., alt="Upload image icon", alt="Download result icon").
+
+Execution: Apply these changes directly to the code. Output the modified <head> section and the specific <body> parts you touched.
+
+ßß

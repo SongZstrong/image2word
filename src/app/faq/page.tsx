@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import SEO from "@/components/SEO";
 
 export const metadata: Metadata = {
   title: "FAQ - Image to Text Converter Questions | image2word.com",
@@ -50,40 +51,73 @@ export default function FAQPage() {
     }
   ];
 
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="text-center mb-12">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h1>
-        <p className="text-lg text-gray-600">
-          Find answers to common questions about our image-to-text conversion tool
-        </p>
-      </div>
+    <>
+      <SEO
+        title="FAQ - Image to Text Converter Questions | image2word.com"
+        description="Find answers to frequently asked questions about our image to text converter, OCR technology, supported formats, accuracy, and data security."
+        url="https://image2word.com/faq"
+        keywords={[
+          "FAQ",
+          "image to text converter",
+          "OCR technology",
+          "supported formats",
+          "data security",
+        ]}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqStructuredData),
+        }}
+      />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="text-center mb-12">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h1>
+          <p className="text-lg text-gray-600">
+            Find answers to common questions about our image-to-text conversion tool
+          </p>
+        </div>
 
-      <div className="space-y-6">
-        {faqs.map((faq, index) => (
-          <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">
-              {faq.question}
-            </h3>
-            <p className="text-gray-600 leading-relaxed">
-              {faq.answer}
-            </p>
-          </div>
-        ))}
-      </div>
+        <div className="space-y-6">
+          {faqs.map((faq, index) => (
+            <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                {faq.question}
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                {faq.answer}
+              </p>
+            </div>
+          ))}
+        </div>
 
-      <div className="mt-12 bg-blue-50 rounded-lg p-6 text-center">
-        <h2 className="text-xl font-semibold text-gray-900 mb-3">Still have questions?</h2>
-        <p className="text-gray-600 mb-4">
-          If you couldn&apos;t find the answer you&apos;re looking for, feel free to contact us.
-        </p>
-        <a
-          href="/contact"
-          className="inline-block bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
-        >
-          Contact Us
-        </a>
+        <div className="mt-12 bg-blue-50 rounded-lg p-6 text-center">
+          <h2 className="text-xl font-semibold text-gray-900 mb-3">Still have questions?</h2>
+          <p className="text-gray-600 mb-4">
+            If you couldn&apos;t find the answer you&apos;re looking for, feel free to contact us.
+          </p>
+          <a
+            href="/contact"
+            className="inline-block bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
+          >
+            Contact Us
+          </a>
+        </div>
       </div>
-    </div>
+    </>
   );
 } 

@@ -1,5 +1,3 @@
-import Script from 'next/script';
-
 interface SEOProps {
   title: string;
   description: string;
@@ -46,8 +44,7 @@ export default function SEO({
   };
 
   return (
-    <Script
-      id="structured-data"
+    <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{
         __html: JSON.stringify(structuredData)

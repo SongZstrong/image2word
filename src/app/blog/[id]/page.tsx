@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, Calendar, Clock } from 'lucide-react';
@@ -9,6 +10,64 @@ import { formatBlogDate, formatReadTime } from '@/lib/blog';
 type BlogPostPageProps = {
   params: Promise<{ id: string }>;
 };
+
+const baseUrl = "https://image2word.com";
+
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const postId = Number.parseInt(id, 10);
+
+  if (Number.isNaN(postId)) {
+    return {
+      title: "Blog Post Not Found | image2word.com",
+      description: "The blog post you are looking for does not exist.",
+      robots: {
+        index: false,
+        follow: false,
+      },
+      alternates: {
+        canonical: `${baseUrl}/blog`,
+      },
+    };
+  }
+
+  const post = await getBlogPostById(postId);
+
+  if (!post) {
+    return {
+      title: "Blog Post Not Found | image2word.com",
+      description: "The blog post you are looking for does not exist.",
+      robots: {
+        index: false,
+        follow: false,
+      },
+      alternates: {
+        canonical: `${baseUrl}/blog`,
+      },
+    };
+  }
+
+  return {
+    title: `${post.title} | image2word.com`,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: `${baseUrl}/blog/${post.id}`,
+      type: "article",
+      images: post.coverImageUrl ? [{ url: post.coverImageUrl }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: post.coverImageUrl ? [post.coverImageUrl] : undefined,
+    },
+    alternates: {
+      canonical: `${baseUrl}/blog/${post.id}`,
+    },
+  };
+}
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { id } = await params;
@@ -47,8 +106,34 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     );
   }
 
+  const articleStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    image: post.coverImageUrl ? [post.coverImageUrl] : undefined,
+    datePublished: post.publishedAt,
+    dateModified: post.publishedAt,
+    author: {
+      "@type": "Organization",
+      name: "image2word.com",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "image2word.com",
+      url: baseUrl,
+    },
+    mainEntityOfPage: `${baseUrl}/blog/${post.id}`,
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleStructuredData),
+        }}
+      />
       {/* Back Button */}
       <div className="mb-6">
         <Link 
