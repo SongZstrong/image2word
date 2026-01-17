@@ -6,9 +6,21 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
+        crawlDelay: 1,
+      },
+      {
+        userAgent: "Googlebot",
+        allow: "/",
+      },
+      {
+        userAgent: "Bingbot",
+        allow: "/",
+      },
+      {
+        userAgent: "Slurp",
+        allow: "/",
       },
     ],
     sitemap: "https://image2word.com/sitemap.xml",
-    host: "https://image2word.com",
   };
 }
